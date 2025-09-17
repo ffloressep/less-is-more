@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Menos é Mais — E-books</title>
+  <style>
+    /* Reset simples */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root{
+      --bg: #f7f7f7;
+      --text: #111;
+      --muted: #666;
+      --accent1: #6e48aa;
+      --accent2: #9d50bb;
+    }
+
+    body{
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:1000px;
+      text-align:center;
+    }
+
+    h1{
+      font-size:2.8rem;
+      line-height:1.05;
+      font-weight:700;
+      margin-bottom:0.5rem;
+    }
+
+    p.lead{
+      color:var(--muted);
+      font-size:1.05rem;
+      margin-bottom:2rem;
+      max-width:760px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+
+    .ebook-links{
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .ebook-btn{
+      appearance:none;
+      -webkit-appearance:none;
+      display:inline-block;
+      padding:12px 26px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:700;
+      border:0;
+      cursor:pointer;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      color:#fff;
+      transition: transform .28s ease, box-shadow .28s ease;
+    }
+
+    .ebook-btn:hover{ transform: translateY(-6px); box-shadow: 0 18px 36px rgba(0,0,0,0.12); }
+
+    footer{
+      margin-top:36px;
+      color:var(--muted);
+      font-size:0.9rem;
+    }
+
+    /* Modal (fade + scale) */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(0,0,0,0.45);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .25s ease;
+      z-index:1000;
+      padding:20px;
+    }
+
+    .modal.is-open{ opacity:1; pointer-events:auto; }
+
+    .modal-card{
+      width:100%;
+      max-width:520px;
+      background:#ffffff;
+      color:var(--text);
+      border-radius:12px;
+      padding:26px;
+      box-shadow: 0 20px 40px rgba(16,24,40,0.12);
+      transform: translateY(8px) scale(.98);
+      transition: transform .28s cubic-bezier(.2,.9,.3,1), opacity .22s ease;
+      opacity:0;
+    }
+
+    .modal.is-open .modal-card{ transform:none; opacity:1; }
+
+    .modal h2{ font-size:1.25rem; margin-bottom:8px; }
+    .modal p{ color:#505050; line-height:1.45; margin-bottom:18px; }
+
+    .modal-actions{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      align-items:center;
+      margin-top:8px;
+    }
+
+    .btn-buy{
+      display:inline-block;
+      padding:10px 18px;
+      border-radius:999px;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      color:#fff;
+      text-decoration:none;
+      font-weight:800;
+      border:0;
+    }
+
+    .btn-close{
+      background:transparent;
+      border:1px solid #ddd;
+      padding:8px 14px;
+      border-radius:999px;
+      cursor:pointer;
+      color:var(--text);
+    }
+
+    /* Close icon */
+    .close-x{
+      position:absolute;
+      top:12px;
+      right:16px;
+      font-size:20px;
+      color:#888;
+      cursor:pointer;
+      background:transparent;
+      border:0;
+    }
+
+    /* Responsividade */
+    @media (max-width:720px){
+      h1{ font-size:2.0rem; }
+      .modal-card{ padding:18px; border-radius:10px; }
+      .ebook-btn{ padding:12px 20px; width:100%; max-width:360px; }
+      .ebook-links{ gap:10px; flex-direction:column; align-items:center; }
+      .modal-actions{ flex-direction:column-reverse; gap:12px; align-items:stretch; }
+      .btn-buy, .btn-close{ width:100%; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <h1>Menos é Mais<br>A poderosa fisolofia do essencial</h1>
+    <p class="lead">Transforme sua rotina com o poder da simplicidade. Nosso conteúdo quer conversar com você, que procura mais foco, clareza e resultados reais — com poucos elementos, você conquista grandes mudanças. Comece agora e veja a diferença!</p>
+
+    <div class="ebook-links" aria-hidden="false">
+      <!-- Usamos buttons para abrir modais (melhor semântica) -->
+      <button class="ebook-btn" type="button" data-modal="modal-1">Habitar com Propósito - A arte de viver em pouco espaço</button>
+      <button class="ebook-btn" type="button" data-modal="modal-2">Organizar para Simplificar - Minimalismo para o dia a dia</button>
+      <button class="ebook-btn" type="button" data-modal="modal-3">Lançamentos</button>
+    </div>
+
+    <footer>© 2025 F&F. Todos os direitos reservados.</footer>
+  </div>
+
+  <!-- Modal 1 -->
+  <div id="modal-1" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="m1-title">
+    <div class="modal-card" role="document">
+      <button class="close-x" aria-label="Fechar">×</button>
+      <h2 id="m1-title">Habitar com Propósito - A arte de viver em pouco espaço</h2>
+      <p>Um guia que oferece insights e dicas práticas para transformar o seu lar em um verdadeiro refúgio minimalista e organizado.</p>
+
+      <div class="modal-actions">
+        <button class="btn-close" type="button">Fechar</button>
+        <!-- Troque o href abaixo pelo link de compra da obra -->
+        <a class="btn-buy" href="https://pay.kiwify.com.br/80YrKKz" target="_blank" rel="noopener">Comprar Agora</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2 -->
+  <div id="modal-2" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="m2-title">
+    <div class="modal-card" role="document">
+      <button class="close-x" aria-label="Fechar">×</button>
+      <h2 id="m2-title">Organizar para Simplificar - Minimalismo para o dia a dia</h2>
+      <p>Um guia que oferece dicas para transformar o seu lar em um ambiente funcional e acolhedor, onde cada objeto tem propósito.</p>
+
+      <div class="modal-actions">
+        <button class="btn-close" type="button">Fechar</button>
+        <a class="btn-buy" href="https://pay.kiwify.com.br/pOM842A" target="_blank" rel="noopener">Comprar Agora</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3 -->
+  <div id="modal-3" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="m3-title">
+    <div class="modal-card" role="document">
+      <button class="close-x" aria-label="Fechar">×</button>
+      <h2 id="m3-title">Lançamentos</h2>
+      <p>Novos títulos em breve.</p>
+
+      <div class="modal-actions">
+        <button class="btn-close" type="button">Fechar</button>
+        <a class="btn-buy" href="https://sualoja.com/vida" target="_blank" rel="noopener">Comprar Agora</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Abrir / fechar modais — sem inline attributes
+    const openButtons = document.querySelectorAll('[data-modal]');
+    const modals = document.querySelectorAll('.modal');
+
+    openButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-modal');
+        openModal(id);
+      });
+    });
+
+    // adiciona funcionalidade aos botões Fechar e ao X
+    modals.forEach(modal => {
+      const closeButtons = modal.querySelectorAll('.btn-close, .close-x');
+      closeButtons.forEach(cb => cb.addEventListener('click', () => closeModal(modal.id)));
+
+      // clique fora do card fecha modal
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal(modal.id);
+      });
+    });
+
+    // abrir função
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (!modal) return;
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden','false');
+      // bloqueia rolagem do body
+      document.body.style.overflow = 'hidden';
+      // foco no primeiro elemento interativo (botão fechar)
+      const closeBtn = modal.querySelector('.close-x') || modal.querySelector('.btn-close');
+      if (closeBtn) closeBtn.focus();
+      // salva o modal aberto (para ESC)
+      window.__openModal = modal;
+    }
+
+    // fechar função
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (!modal) return;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+      window.__openModal = null;
+    }
+
+    // ESC fecha modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === "Escape" || e.key === "Esc") {
+        if (window.__openModal) closeModal(window.__openModal.id);
+      }
+    });
+
+    // garantia: fechar todos se necessário
+    function closeAllModals(){
+      document.querySelectorAll('.modal.is-open').forEach(m => closeModal(m.id));
+    }
+  </script>
+</body>
+</html>
